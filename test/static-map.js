@@ -4,6 +4,7 @@
 
 var assert = require('assert');
 var StaticMap = require('../index');
+
 var fs = require('fs');
 
 describe('Static map', function() {
@@ -54,8 +55,7 @@ describe('Static map', function() {
   });
 
   it('should create tileLayer', function() {
-    var map = new StaticMap();
-    var tileLayer = map.tileLayer({});
+    var tileLayer = StaticMap.layers.tile({});
 
     assert.equal(tileLayer.tileSize, 256);
     assert.equal(tileLayer.tileUrl, 'http://tile.openstreetmap.org/{z}/{x}/{y}.png');
@@ -63,7 +63,7 @@ describe('Static map', function() {
 
   it('should add layer', function() {
     var map = new StaticMap();
-    var tileLayer = map.tileLayer({});
+    var tileLayer = StaticMap.layers.tile({});
     map.addLayer(tileLayer);
 
     assert.equal(tileLayer.getMap(), map);
@@ -83,7 +83,7 @@ describe('Static map', function() {
   describe('Tile Layer', function() {
     it('should render', function(done) {
       var map = createDefaultMap();
-      map.addLayer(map.tileLayer())
+      map.addLayer(StaticMap.layers.tile())
         .setWidth(400)
         .setHeight(400)
         .setZoom(5)
@@ -98,8 +98,8 @@ describe('Static map', function() {
     it('should render', function(done) {
       var map = createDefaultMap();
       map
-        .addLayer(map.tileLayer())
-        .addLayer(map.markerLayer({latLng: [51.529788, 31.268733]}))
+        .addLayer(StaticMap.layers.tile())
+        .addLayer(StaticMap.layers.marker({latLng: [51.529788, 31.268733]}))
         .setWidth(1024)
         .setHeight(1024)
         .setZoom(13)
@@ -109,4 +109,21 @@ describe('Static map', function() {
         .on('error', done);
     });
   });
+
+  //describe('Polygon layer', function() {
+  //  it('should render', function(done) {
+  //    var map = createDefaultMap();
+  //    map
+  //      .addLayer(StaticMap.layers.tile())
+  //      .addLayer(StaticMap.layers.polygon([[51.529788, 31.268733]]))
+  //      .setWidth(1024)
+  //      .setHeight(1024)
+  //      .setZoom(13)
+  //      .pngStream()
+  //      .pipe(fs.createWriteStream('/tmp/static_map_polygon.png'))
+  //      .on('finish', done)
+  //      .on('error', done);
+  //  });
+  //});
+
 });
