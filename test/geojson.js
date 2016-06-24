@@ -20,24 +20,17 @@ describe('Geojson layer', function() {
     var geojson = StaticMap.layers.geojson({});
     geojson.addData(require('./fixtures/geojson.json'));
 
-    done();
-    //var map = createDefaultMap();
-    //
-    //var polygon = StaticMap.layers.polygon(latLngs);
-    //
-    //var polygon1 = StaticMap.layers.polygon(latLngs1);
-    //polygon1.setStyle('fillStyle', 'red');
-    //
-    //map
-    //  .addLayer(StaticMap.layers.tile())
-    //  .addLayer(polygon)
-    //  .addLayer(polygon1)
-    //  .setWidth(1024)
-    //  .setHeight(1024)
-    //  .setZoom(13)
-    //  .pngStream()
-    //  .pipe(fs.createWriteStream(common.tmpDir() + '/static_map_polygon.png'))
-    //  .on('finish', done)
-    //  .on('error', done);
+    var map = createDefaultMap();
+
+    map
+      .addLayer(StaticMap.layers.tile())
+      .addLayer(geojson)
+      .setWidth(1024)
+      .setHeight(1024)
+      .setZoom(13)
+      .pngStream()
+      .pipe(fs.createWriteStream(common.tmpDir() + '/static_map_geojson.png'))
+      .on('finish', done)
+      .on('error', done);
   });
 });
