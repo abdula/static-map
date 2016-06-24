@@ -4,22 +4,13 @@
 
 var assert = require('assert');
 var StaticMap = require('../index');
+var common = require('./common');
+var createDefaultMap = common.createDefaultMap;
 
 var fs = require('fs');
 
 describe('Static map', function() {
   this.timeout(5000);
-
-  function createDefaultMap() {
-    var map = new StaticMap();
-    map
-      .setZoom(6)
-      .setCenter([51.498200, 31.289350])
-      .setWidth(256)
-      .setHeight(256);
-
-    return map;
-  }
 
   it('should use default options', function() {
     var map = new StaticMap();
@@ -79,51 +70,4 @@ describe('Static map', function() {
       .on('finish', done)
       .on('error', done);
   });
-
-  describe('Tile Layer', function() {
-    it('should render', function(done) {
-      var map = createDefaultMap();
-      map.addLayer(StaticMap.layers.tile())
-        .setWidth(400)
-        .setHeight(400)
-        .setZoom(5)
-        .pngStream()
-        .pipe(fs.createWriteStream('/tmp/map_tile.png'))
-        .on('finish', done)
-        .on('error', done);
-    });
-  });
-
-  describe('Marker layer', function() {
-    it('should render', function(done) {
-      var map = createDefaultMap();
-      map
-        .addLayer(StaticMap.layers.tile())
-        .addLayer(StaticMap.layers.marker({latLng: [51.529788, 31.268733]}))
-        .setWidth(1024)
-        .setHeight(1024)
-        .setZoom(13)
-        .pngStream()
-        .pipe(fs.createWriteStream('/tmp/static_map_marker.png'))
-        .on('finish', done)
-        .on('error', done);
-    });
-  });
-
-  //describe('Polygon layer', function() {
-  //  it('should render', function(done) {
-  //    var map = createDefaultMap();
-  //    map
-  //      .addLayer(StaticMap.layers.tile())
-  //      .addLayer(StaticMap.layers.polygon([[51.529788, 31.268733]]))
-  //      .setWidth(1024)
-  //      .setHeight(1024)
-  //      .setZoom(13)
-  //      .pngStream()
-  //      .pipe(fs.createWriteStream('/tmp/static_map_polygon.png'))
-  //      .on('finish', done)
-  //      .on('error', done);
-  //  });
-  //});
-
 });
