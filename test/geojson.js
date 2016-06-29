@@ -7,7 +7,7 @@ var StaticMap = require('../index');
 var common = require('./common');
 
 var fs = require('fs');
-var accessToken = '';
+var accessToken = process.env.ACCESS_TOKEN;
 
 describe('Geojson layer', function() {
   this.timeout(20000);
@@ -47,13 +47,15 @@ describe('Geojson layer', function() {
       };
     }});
     geojson.addData(require('./fixtures/washington.json'));
+    console.log(geojson.getBounds());
 
     var map = new StaticMap();
     map//.setCenter([45.0363189483057, -67.6361015234257])
       .setWidth(1024)
       .setHeight(1024)
-      .fitBounds(StaticMap.latLng([44.394078, -68.1060180659999]), StaticMap.latLng([45.6889038090001, -66.949831]));
+      .fitBounds(geojson.getBounds());
 
+//StaticMap.latLng([44.394078, -68.1060180659999]), StaticMap.latLng([45.6889038090001, -66.949831])
     //console.log(map.getCenter());
     //console.log(map.getZoom());
 
